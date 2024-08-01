@@ -1,6 +1,6 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "bug-tracker",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "deploy": "next build && aws s3 sync .next/static/ s3://miko-portfolio-website/.next/static/ && aws s3 sync public/ s3://miko-portfolio-website/public/"
+    "deploy": "next build && aws s3 sync .next/static/ s3://$AWS_BUCKET_NAME/.next/static/ && aws s3 sync public/ s3://$AWS_BUCKET_NAME/public/"
   },
   "dependencies": {
     "next": "14.2.5",
@@ -19,6 +19,8 @@
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.7",
+    "@swc/core": "^1.7.4",
+    "@swc/jest": "^0.2.36",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "babel-jest": "^29.7.0",
