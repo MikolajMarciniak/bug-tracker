@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 
 const projects = [
@@ -14,9 +16,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-8 text-black ">
       <h1 className="text-2xl font-bold mb-4">Projects</h1>
-      <table className="min-w-full bg-white shadow-md rounded-lg">
+      <table className="min-w-full text-left bg-white shadow-md rounded-lg">
         <thead>
           <tr>
             <th className="py-2 px-4 border-b">ID</th>
