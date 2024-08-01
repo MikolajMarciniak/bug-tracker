@@ -53,14 +53,8 @@ export default function ProjectDetail({ params }) {
 
   return (
     <div className="p-8">
-      <button
-        onClick={() => router.back()}
-        className="text-blue-500 underline mb-4"
-      >
-        Back to Dashboard
-      </button>
       <h1 className="text-2xl font-bold mb-4">{project.name}</h1>
-      <table className="min-w-full bg-white shadow-md rounded-lg">
+      <table className="min-w-full text-left text-black bg-white shadow-md rounded-lg">
         <thead>
           <tr>
             <th className="py-2 px-4 border-b">Bug ID</th>
