@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const appDir = path.join(__dirname, "app");
+const appDir = path.join(__dirname, "../../app");
 
 function scanDirectory(dir, routePrefix = "") {
   const files = fs.readdirSync(dir);
@@ -11,7 +11,7 @@ function scanDirectory(dir, routePrefix = "") {
     const stat = fs.statSync(fullPath);
 
     if (stat.isDirectory()) {
-      if (file.startsWith("[")) {
+      if (file.startsWith("[") && file.endsWith("]")) {
         // Dynamic route
         console.log(`${routePrefix}/${file.replace(/[\[\]]/g, ":")}`);
       } else {
