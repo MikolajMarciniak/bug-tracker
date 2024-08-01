@@ -1,8 +1,15 @@
 import React from "react";
 
-const Table = ({ columns, data, onRowClick }) => {
+const Table = ({ columns, data, onRowDoubleClick }) => {
+  const handleRowDoubleClick = (event, row) => {
+    event.preventDefault();
+    if (onRowDoubleClick) {
+      onRowDoubleClick(row);
+    }
+  };
+
   return (
-    <table className="min-w-full bg-white shadow-md rounded-lg">
+    <table className="min-w-full text-black bg-white shadow-md rounded-lg">
       <thead>
         <tr>
           {columns.map((column, index) => (
@@ -21,7 +28,11 @@ const Table = ({ columns, data, onRowClick }) => {
           </tr>
         ) : (
           data.map((row, rowIndex) => (
-            <tr key={rowIndex} onClick={() => onRowClick && onRowClick(row)}>
+            <tr
+              key={rowIndex}
+              onDoubleClick={(event) => handleRowDoubleClick(event, row)}
+              className="cursor-pointer hover:bg-gray-100"
+            >
               {columns.map((column, colIndex) => (
                 <td key={colIndex} className="py-2 px-4 border-b">
                   {row[column]}

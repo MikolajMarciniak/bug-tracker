@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AuthForm from "../../_components/AuthForm"; // Adjust the import path as needed
+import AuthForm from "../../_components/AuthForm";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -9,10 +9,8 @@ export default function LoginPage() {
   const handleLogin = async (email, password) => {
     setError("");
 
-    // Placeholder for login logic
     if (email === "test@example.com" && password === "password") {
       alert("Login successful!");
-      // Redirect to dashboard or set user state
     } else {
       setError("Invalid email or password");
     }
