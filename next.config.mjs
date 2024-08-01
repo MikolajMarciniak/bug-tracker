@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   distDir: "build",
-  output: "export",
   basePath: "",
 };
 
