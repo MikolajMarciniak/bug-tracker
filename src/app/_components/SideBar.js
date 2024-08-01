@@ -7,9 +7,8 @@ export default function Sidebar() {
           <a href="/dashboard">Dashboard</a>
         </li>
         <li>
-          <a href="/projects">Projects</a>
+          <a href="/login">Login</a>
         </li>
-        {/* Add more links as needed */}
       </ul>
     </aside>
   );
