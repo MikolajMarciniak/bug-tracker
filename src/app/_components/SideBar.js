@@ -5,7 +5,7 @@ export default function Sidebar() {
     <aside className="sidebar" role="banner">
       <ul>
         <li>
-          <a href="/projects">Dashboard</a>
+          <a href="/dashboard">Dashboard</a>
         </li>
         <li>
           <a href="/login">Login</a>
