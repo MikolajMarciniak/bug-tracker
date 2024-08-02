@@ -4,6 +4,7 @@ const nextConfig = {
   distDir: "build",
   output: "export",
   basePath: "",
+  trailingSlash: true,
   experimental: {
     forceSwcTransforms: true,
   },
