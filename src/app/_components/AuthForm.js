@@ -1,4 +1,3 @@
-// components/AuthForm.js
 import { useState } from "react";
 
 export default function AuthForm({ onSubmit, error }) {
