@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "deploy": "next build && aws s3 sync .next/static/ s3://$AWS_BUCKET_NAME/.next/static/ && aws s3 sync public/ s3://$AWS_BUCKET_NAME/public/"
+    "print": "npx dotenv -p AWS_BUCKET_NAME",
+    "deploy": "next build && node deploy.js"
   },
   "dependencies": {
     "next": "14.2.5",

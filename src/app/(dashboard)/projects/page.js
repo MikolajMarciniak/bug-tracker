@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Table from "../_components/Table";
+import Table from "../../_components/Table";
 
 const projectColumns = ["id", "name", "status"];
 const projectData = [
@@ -13,7 +13,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   const handleRowDoubleClick = (project) => {
-    router.push(`/dashboard/projects/${project.id}`);
+    router.push(`/project?id=${project.id}`); // Redirects to project details with query parameter
   };
 
   return (
