@@ -5,6 +5,7 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  defaultBoardId: string;
 }
 
 interface ProjectListProps {
@@ -21,8 +22,10 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
       {projects.map((project) => (
         <ProjectCard
           key={project.id}
+          id={project.id}
           title={project.title}
           description={project.description}
+          defaultBoardId={project.defaultBoardId}
         />
       ))}
     </div>
