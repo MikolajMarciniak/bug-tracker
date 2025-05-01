@@ -27,6 +27,7 @@
     "next-auth": "^4.24.11",
     "react": "^18",
     "react-dom": "^18",
+    "uuid": "^11.1.0",
     "whatwg-fetch": "^3.6.20"
   },
   "devDependencies": {
@@ -38,6 +39,7 @@
     "@types/jest": "^29.5.12",
     "@types/react": "19.1.2",
     "@types/testing-library__jest-dom": "^5.14.9",
+    "@types/uuid": "^10.0.0",
     "babel-jest": "^29.7.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",

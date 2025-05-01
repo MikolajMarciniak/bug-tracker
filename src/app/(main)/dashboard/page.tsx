@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 
@@ -13,15 +14,25 @@ export default function DashboardPage() {
         <DashboardCard title="Recent Activity" link="#">
           Check your recent activities
         </DashboardCard>
-        {/* Add more dashboard cards as needed */}
       </div>
     </div>
   );
 }
 
-function DashboardCard({ title, children, link }: { title: string; children: React.ReactNode; link: string }) {
+function DashboardCard({
+  title,
+  children,
+  link,
+}: {
+  title: string;
+  children: React.ReactNode;
+  link: string;
+}) {
   return (
-    <Link href={link} className="block p-6 bg-white rounded-lg shadow-md hover:bg-gray-50">
+    <Link
+      href={link}
+      className="block p-6 bg-white rounded-lg shadow-md hover:bg-gray-50"
+    >
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
       <p className="text-gray-600">{children}</p>
     </Link>

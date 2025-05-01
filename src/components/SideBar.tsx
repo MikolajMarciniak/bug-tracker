@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { mockProjects } from "@/lib/mockData";
+import { getProjects, getBoards, Project, Board } from "@/lib/localDatabase";
 
 interface SideBarProps {
   isMobile?: boolean;
@@ -10,9 +10,20 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [boards, setBoards] = useState<Board[]>([]);
+
+  useEffect(() => {
+    setProjects(getProjects());
+    setBoards(getBoards());
+  }, []);
 
   const toggleProject = (projectId: string) => {
     setExpandedProject(expandedProject === projectId ? null : projectId);
+  };
+
+  const getProjectBoards = (projectId: string) => {
+    return boards.filter(board => board.projectId === projectId);
   };
 
   return (
@@ -24,16 +35,15 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
         <ul className="space-y-2">
           <li>
             <Link
-              href="/dashboard"
+              href="/projects"
               className="block py-2 px-4 text-gray-700 hover:bg-gray-200 rounded"
             >
-              Dashboard
+              Projects
             </Link>
           </li>
           <li>
-            <div className="py-2 px-4 text-gray-700">Projects</div>
             <ul className="ml-4 space-y-1">
-              {mockProjects.map((project) => (
+              {projects.map((project) => (
                 <li key={project.id}>
                   <button
                     onClick={() => toggleProject(project.id)}
@@ -51,14 +61,18 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
                           Overview
                         </Link>
                       </li>
-                      <li>
-                        <Link
-                          href={`/projects/${project.id}/board/${project.defaultBoardId}`}
-                          className="block py-1 px-4 text-gray-600 hover:bg-gray-200 rounded"
-                        >
-                          Board
-                        </Link>
-                      </li>
+                      {getProjectBoards(project.id)
+                        .sort((a, b) => a.id === project.defaultBoardId ? -1 : b.id === project.defaultBoardId ? 1 : 0)
+                        .map((board) => (
+                          <li key={board.id}>
+                            <Link
+                              href={`/projects/${project.id}/board/${board.id}`}
+                              className="block py-1 px-4 text-gray-600 hover:bg-gray-200 rounded"
+                            >
+                              {board.name} {board.id === project.defaultBoardId ? "(Main)" : ""}
+                            </Link>
+                          </li>
+                        ))}
                     </ul>
                   )}
                 </li>
