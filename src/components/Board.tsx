@@ -1,15 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import Column from './Column';
+import AddColumnForm from './AddColumnForm';
+import AddCardForm from './AddCardForm';
 
-const BoardComponent: React.FC<{ projectId: string }> = ({ projectId }) => {
-  const [columns, setColumns] = React.useState([
-    { id: 'todo', title: 'To Do' },
-    { id: 'inProgress', title: 'In Progress' },
-    { id: 'done', title: 'Done' },
+interface BoardProps {
+  projectId: string;
+  boardId: string;
+}
+
+const BoardComponent: React.FC<BoardProps> = ({ projectId, boardId }) => {
+  const [columns, setColumns] = useState([
+    { id: 'todo', title: 'To Do', cards: [] },
+    { id: 'inProgress', title: 'In Progress', cards: [] },
+    { id: 'done', title: 'Done', cards: [] },
   ]);
 
   const sensors = useSensors(
@@ -32,13 +39,41 @@ const BoardComponent: React.FC<{ projectId: string }> = ({ projectId }) => {
     }
   };
 
+  const handleAddColumn = (title: string) => {
+    const newColumn = {
+      id: `column-${Date.now()}`,
+      title,
+      cards: [],
+    };
+    setColumns([...columns, newColumn]);
+  };
+
+  const handleAddCard = (columnId: string, cardTitle: string) => {
+    setColumns(columns.map(column => {
+      if (column.id === columnId) {
+        return {
+          ...column,
+          cards: [...column.cards, { id: `card-${Date.now()}`, title: cardTitle }],
+        };
+      }
+      return column;
+    }));
+  };
+
   return (
     <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
       <SortableContext items={columns.map((col) => col.id)} strategy={verticalListSortingStrategy}>
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 overflow-x-auto">
           {columns.map((column) => (
-            <Column key={column.id} id={column.id} title={column.title} />
+            <Column 
+              key={column.id} 
+              id={column.id} 
+              title={column.title} 
+              cards={column.cards}
+              onAddCard={(cardTitle) => handleAddCard(column.id, cardTitle)}
+            />
           ))}
+          <AddColumnForm onAddColumn={handleAddColumn} />
         </div>
       </SortableContext>
     </DndContext>

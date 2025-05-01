@@ -4,10 +4,10 @@ import { CSS } from '@dnd-kit/utilities';
 
 interface CardProps {
   id: string;
-  content: string;
+  title: string;
 }
 
-const Card: React.FC<CardProps> = ({ id, content }) => {
+const Card: React.FC<CardProps> = ({ id, title }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
@@ -21,9 +21,9 @@ const Card: React.FC<CardProps> = ({ id, content }) => {
       style={style}
       {...attributes}
       {...listeners}
-      className="bg-white p-4 mb-2 rounded shadow"
+      className="bg-white p-2 mb-2 rounded shadow"
     >
-      {content}
+      {title}
     </div>
   );
 };
