@@ -1,13 +1,7 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   distDir: "build",
   output: "export",
-  basePath: "",
   trailingSlash: true,
-  experimental: {
-    forceSwcTransforms: true,
-  },
+ transpilePackages: ['@dnd-kit/core', '@dnd-kit/sortable'],
 };
-
-export default nextConfig;
