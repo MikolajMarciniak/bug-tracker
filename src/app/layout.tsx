@@ -1,7 +1,8 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { Providers } from "./providers";
-import SideBar from "@/components/SideBar";
+import NavWrapper from "../components/NavWrapper";
+
 import "../styles/globals.css";
 
 export default function RootLayout({
@@ -43,9 +44,11 @@ export default function RootLayout({
           }}
         />
         <Providers>
-          <div className="flex min-h-screen">
-            <SideBar />
-            <main className="flex-1 p-4">{children}</main>
+          <div className="relative flex h-screen w-screen">
+            <NavWrapper />
+            <main className="pl-16 h-screen w-screen bg-red-200">
+              {children}
+            </main>
           </div>
         </Providers>
       </body>

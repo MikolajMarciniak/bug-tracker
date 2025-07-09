@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useProjectContext } from "../contexts/ProjectContext";
 import "../styles/sidebar.css";
 
 interface SideBarProps {
   isMobile?: boolean;
+  isCollapsed: boolean;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
+const SideBar: React.FC<SideBarProps> = ({ isMobile = false, isCollapsed }) => {
   const [projectsExpanded, setProjectsExpanded] = useState(false);
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(
     new Set()
@@ -21,7 +22,7 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
   }, []);
 
   const toggleProjectsList = (e: React.MouseEvent) => {
-    e.preventDefault(); // prevent link navigation
+    e.preventDefault();
     setProjectsExpanded(!projectsExpanded);
   };
 
@@ -35,28 +36,49 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
     setExpandedProjects(newSet);
   };
 
-  const getProjectBoards = (projectId: string) => {
-    return boards.filter((board) => board.projectId === projectId);
-  };
+  const getProjectBoards = (projectId: string) =>
+    boards.filter((board) => board.projectId === projectId);
 
   return (
     <aside
       role="complementary"
-      className={`sidebar ${isMobile ? "hidden" : ""}`}
+      className={`sidebar ${isCollapsed ? "collapsed" : ""} top-14 fixed`}
     >
-      <nav role="navigation">
+      <div className="sidebar-header flex items-center justify-between px-2 py-3">
+        {/* HamburgerMenu removed here */}
+      </div>
+
+      <nav role="navigation" className="sidebar-content">
         <ul className="sidebar-nav">
           <li className="sidebar-item-with-icon">
-            <Link href="/projects" className="sidebar-link">
-              Projects
+            <Link href="/dashboard" className="sidebar-link">
+              <img
+                src="/icons/house.svg"
+                alt="Dashboard Icon"
+                className="w-6 sidebar-icon"
+              />
+              <span className="sidebar-label">Dashboard</span>
             </Link>
-            <button
-              className={`chevron-button ${projectsExpanded ? "rotate" : ""}`}
-              onClick={toggleProjectsList}
-              aria-label="Toggle Projects List"
-            >
-              <span className="chevron-icon">▸</span>
-            </button>
+          </li>
+
+          <li className="sidebar-item-with-icon">
+            <Link href="/projects" className="sidebar-link">
+              <img
+                src="/icons/folder.svg"
+                alt="Projects Icon"
+                className="w-6 sidebar-icon"
+              />
+              <span className="sidebar-label">Projects</span>
+            </Link>
+            {!isCollapsed && (
+              <button
+                onClick={toggleProjectsList}
+                aria-label="Toggle Projects"
+                className="ml-auto"
+              >
+                {projectsExpanded ? "▼" : "▶"}
+              </button>
+            )}
           </li>
 
           <li>
@@ -71,23 +93,23 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
                   return (
                     <li key={project.id}>
                       <div className="sidebar-item-with-icon">
-                        <button
-                          onClick={() => toggleProject(project.id)}
-                          className={`chevron-button ${
-                            isExpanded ? "rotate" : ""
-                          }`}
-                          aria-label={`Toggle ${project.title} Boards`}
-                        >
-                          <span className="chevron-icon">▸</span>
-                        </button>
+                        {!isCollapsed && (
+                          <button
+                            onClick={() => toggleProject(project.id)}
+                            aria-label={`Toggle ${project.title}`}
+                            className="mr-2"
+                          >
+                            {isExpanded ? "▼" : "▶"}
+                          </button>
+                        )}
                         <button
                           onClick={() => toggleProject(project.id)}
                           className="sidebar-project-button"
                         >
-                          {project.title}
+                          📌{" "}
+                          <span className="sidebar-label">{project.title}</span>
                         </button>
                       </div>
-
                       <div
                         className={`sidebar-board-wrapper ${
                           isExpanded ? "expanded" : ""
@@ -99,7 +121,7 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
                               href={`/projects/${project.id}`}
                               className="sidebar-board-link"
                             >
-                              Overview
+                              📄 <span className="sidebar-label">Overview</span>
                             </Link>
                           </li>
                           {getProjectBoards(project.id)
@@ -116,7 +138,10 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
                                   href={`/projects/${project.id}/board/${board.id}`}
                                   className="sidebar-board-link"
                                 >
-                                  {board.name}
+                                  🧩{" "}
+                                  <span className="sidebar-label">
+                                    {board.name}
+                                  </span>
                                 </Link>
                               </li>
                             ))}
@@ -129,9 +154,25 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
             </div>
           </li>
 
-          <li>
-            <Link href="/settings" className="sidebar-link">
-              Settings
+          <li className="sidebar-item-with-icon">
+            <Link href="/issues" className="sidebar-link">
+              <img
+                src="/icons/bug.svg"
+                alt="Issues Icon"
+                className="w-6 sidebar-icon"
+              />
+              <span className="sidebar-label">Issues</span>
+            </Link>
+          </li>
+
+          <li className="sidebar-item-with-icon">
+            <Link href="/reports" className="sidebar-link">
+              <img
+                src="/icons/bar-chart-4.svg"
+                alt="Reports Icon"
+                className="w-6 sidebar-icon"
+              />
+              <span className="sidebar-label">Reports</span>
             </Link>
           </li>
         </ul>
