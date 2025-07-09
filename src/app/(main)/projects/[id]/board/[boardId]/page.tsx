@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getProjects, getBoards, Project, Board } from "@/lib/localDatabase";
+import { getProjects, getBoards, Project, Board } from "@/lib/operations";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -52,14 +52,14 @@ export default function BoardPage({
     <div>
       <nav className="mb-4">
         <Link
-          href={`/projects/${project.id}`}
+          href="/projects"
           className="text-blue-500 hover:underline"
         >
-          Back to Project
+          Back to Projects
         </Link>
       </nav>
       <h1 className="text-2xl font-bold mb-4">
-        {project.title} - {board.name}
+        {project.title} Board
       </h1>
       <DynamicBoardComponent projectId={project.id} boardId={board.id} />
     </div>

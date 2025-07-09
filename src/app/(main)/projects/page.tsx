@@ -2,9 +2,16 @@
 import React, { useState, useEffect } from "react";
 import ProjectsList from "@/components/ProjectsList";
 import AddProjectForm from "@/components/AddProjectForm";
-import { getProjects, addProject, addBoard, deleteProject, Project } from "@/lib/localDatabase";
+import {
+  getProjects,
+  deleteProject,
+  addProject,
+  Project,
+} from "@/lib/operations";
+import { useProjectContext } from "@/contexts/ProjectContext";
 
 export default function ProjectsPage() {
+  const { refreshData } = useProjectContext();
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
@@ -12,14 +19,15 @@ export default function ProjectsPage() {
   }, []);
 
   const handleAddProject = (title: string, description: string) => {
-    const newProject = addProject(title, description);
-    addBoard(newProject.id, `${title} Main Board`);
-    setProjects(getProjects());  // Refresh the projects list
+    addProject(title, description);
+    setProjects(getProjects());
+    refreshData();
   };
 
   const handleDeleteProject = (projectId: string) => {
     deleteProject(projectId);
-    setProjects(getProjects());  // Refresh the projects list
+    setProjects(getProjects());
+    refreshData();
   };
 
   return (

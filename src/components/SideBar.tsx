@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { getProjects, getBoards, Project, Board } from "@/lib/localDatabase";
+import { useProjectContext } from "../contexts/ProjectContext";
 
 interface SideBarProps {
   isMobile?: boolean;
@@ -10,12 +10,10 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [boards, setBoards] = useState<Board[]>([]);
+  const { projects, boards, refreshData } = useProjectContext();
 
   useEffect(() => {
-    setProjects(getProjects());
-    setBoards(getBoards());
+    refreshData;
   }, []);
 
   const toggleProject = (projectId: string) => {
@@ -23,7 +21,7 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
   };
 
   const getProjectBoards = (projectId: string) => {
-    return boards.filter(board => board.projectId === projectId);
+    return boards.filter((board) => board.projectId === projectId);
   };
 
   return (
@@ -62,14 +60,20 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
                         </Link>
                       </li>
                       {getProjectBoards(project.id)
-                        .sort((a, b) => a.id === project.defaultBoardId ? -1 : b.id === project.defaultBoardId ? 1 : 0)
+                        .sort((a, b) =>
+                          a.id === project.defaultBoardId
+                            ? -1
+                            : b.id === project.defaultBoardId
+                            ? 1
+                            : 0
+                        )
                         .map((board) => (
                           <li key={board.id}>
                             <Link
                               href={`/projects/${project.id}/board/${board.id}`}
                               className="block py-1 px-4 text-gray-600 hover:bg-gray-200 rounded"
                             >
-                              {board.name} {board.id === project.defaultBoardId ? "(Main)" : ""}
+                              {board.name}
                             </Link>
                           </li>
                         ))}
