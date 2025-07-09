@@ -3,21 +3,36 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useProjectContext } from "../contexts/ProjectContext";
+import "../styles/sidebar.css";
 
 interface SideBarProps {
   isMobile?: boolean;
 }
 
 const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
-  const [expandedProject, setExpandedProject] = useState<string | null>(null);
+  const [projectsExpanded, setProjectsExpanded] = useState(false);
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(
+    new Set()
+  );
   const { projects, boards, refreshData } = useProjectContext();
 
   useEffect(() => {
-    refreshData;
+    refreshData();
   }, []);
 
+  const toggleProjectsList = (e: React.MouseEvent) => {
+    e.preventDefault(); // prevent link navigation
+    setProjectsExpanded(!projectsExpanded);
+  };
+
   const toggleProject = (projectId: string) => {
-    setExpandedProject(expandedProject === projectId ? null : projectId);
+    const newSet = new Set(expandedProjects);
+    if (newSet.has(projectId)) {
+      newSet.delete(projectId);
+    } else {
+      newSet.add(projectId);
+    }
+    setExpandedProjects(newSet);
   };
 
   const getProjectBoards = (projectId: string) => {
@@ -27,67 +42,95 @@ const SideBar: React.FC<SideBarProps> = ({ isMobile = false }) => {
   return (
     <aside
       role="complementary"
-      className={`w-64 bg-gray-100 p-4 ${isMobile ? "hidden" : ""}`}
+      className={`sidebar ${isMobile ? "hidden" : ""}`}
     >
       <nav role="navigation">
-        <ul className="space-y-2">
-          <li>
-            <Link
-              href="/projects"
-              className="block py-2 px-4 text-gray-700 hover:bg-gray-200 rounded"
-            >
+        <ul className="sidebar-nav">
+          <li className="sidebar-item-with-icon">
+            <Link href="/projects" className="sidebar-link">
               Projects
             </Link>
+            <button
+              className={`chevron-button ${projectsExpanded ? "rotate" : ""}`}
+              onClick={toggleProjectsList}
+              aria-label="Toggle Projects List"
+            >
+              <span className="chevron-icon">▸</span>
+            </button>
           </li>
+
           <li>
-            <ul className="ml-4 space-y-1">
-              {projects.map((project) => (
-                <li key={project.id}>
-                  <button
-                    onClick={() => toggleProject(project.id)}
-                    className="w-full text-left py-1 px-4 text-gray-700 hover:bg-gray-200 rounded"
-                  >
-                    {project.title}
-                  </button>
-                  {expandedProject === project.id && (
-                    <ul className="ml-4 space-y-1">
-                      <li>
-                        <Link
-                          href={`/projects/${project.id}`}
-                          className="block py-1 px-4 text-gray-600 hover:bg-gray-200 rounded"
+            <div
+              className={`sidebar-projects-wrapper ${
+                projectsExpanded ? "expanded" : ""
+              }`}
+            >
+              <ul className="sidebar-projects">
+                {projects.map((project) => {
+                  const isExpanded = expandedProjects.has(project.id);
+                  return (
+                    <li key={project.id}>
+                      <div className="sidebar-item-with-icon">
+                        <button
+                          onClick={() => toggleProject(project.id)}
+                          className={`chevron-button ${
+                            isExpanded ? "rotate" : ""
+                          }`}
+                          aria-label={`Toggle ${project.title} Boards`}
                         >
-                          Overview
-                        </Link>
-                      </li>
-                      {getProjectBoards(project.id)
-                        .sort((a, b) =>
-                          a.id === project.defaultBoardId
-                            ? -1
-                            : b.id === project.defaultBoardId
-                            ? 1
-                            : 0
-                        )
-                        .map((board) => (
-                          <li key={board.id}>
+                          <span className="chevron-icon">▸</span>
+                        </button>
+                        <button
+                          onClick={() => toggleProject(project.id)}
+                          className="sidebar-project-button"
+                        >
+                          {project.title}
+                        </button>
+                      </div>
+
+                      <div
+                        className={`sidebar-board-wrapper ${
+                          isExpanded ? "expanded" : ""
+                        }`}
+                      >
+                        <ul className="sidebar-board-list">
+                          <li>
                             <Link
-                              href={`/projects/${project.id}/board/${board.id}`}
-                              className="block py-1 px-4 text-gray-600 hover:bg-gray-200 rounded"
+                              href={`/projects/${project.id}`}
+                              className="sidebar-board-link"
                             >
-                              {board.name}
+                              Overview
                             </Link>
                           </li>
-                        ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ul>
+                          {getProjectBoards(project.id)
+                            .sort((a, b) =>
+                              a.id === project.defaultBoardId
+                                ? -1
+                                : b.id === project.defaultBoardId
+                                ? 1
+                                : 0
+                            )
+                            .map((board) => (
+                              <li key={board.id}>
+                                <Link
+                                  href={`/projects/${project.id}/board/${board.id}`}
+                                  className="sidebar-board-link"
+                                >
+                                  {board.name}
+                                </Link>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </li>
+
           <li>
-            <Link
-              href="/settings"
-              className="block py-2 px-4 text-gray-700 hover:bg-gray-200 rounded"
-            >
+            <Link href="/settings" className="sidebar-link">
               Settings
             </Link>
           </li>

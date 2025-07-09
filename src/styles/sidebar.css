@@ -1,0 +1,91 @@
+.sidebar {
+  position: absolute;
+  height: 100vh;
+  width: 16rem;
+  background-color: var(--card);
+  padding: 1rem;
+  color: var(--text);
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-link,
+.sidebar-project-button {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-muted);
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 0.375rem;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sidebar-link:hover,
+.sidebar-project-button:hover,
+.sidebar-board-link:hover {
+  background-color: var(--hover);
+}
+
+.sidebar-item-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chevron-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevron-icon {
+  display: inline-block;
+  font-size: 0.9rem;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.rotate .chevron-icon {
+  transform: rotate(-90deg);
+}
+
+.sidebar-projects-wrapper,
+.sidebar-board-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.sidebar-projects-wrapper.expanded,
+.sidebar-board-wrapper.expanded {
+  max-height: 1000px;
+}
+
+.sidebar-projects,
+.sidebar-board-list {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0.25rem 0 0;
+}
+
+.sidebar-board-link {
+  display: block;
+  padding: 0.25rem 1rem;
+  color: var(--text-muted);
+  border-radius: 0.375rem;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}

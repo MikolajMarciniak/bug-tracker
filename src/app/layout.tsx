@@ -2,6 +2,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { Providers } from "./providers";
 import SideBar from "@/components/SideBar";
+import "../styles/globals.css";
 
 export default function RootLayout({
   children,
@@ -27,7 +28,7 @@ export default function RootLayout({
           media="(prefers-color-scheme: dark)"
         />
       </head>
-      <body>
+      <body data-theme="light">
         <script
           dangerouslySetInnerHTML={{
             __html: `
